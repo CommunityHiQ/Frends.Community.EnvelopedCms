@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.IO;
 
 namespace Frends.Community.EnvelopedCms.Tests
 {
@@ -53,6 +54,23 @@ JDpgjqQA9bhUy4dG/9XFt6DS
             Assert.AreEqual(ret.DecryptedFileContentBytes, Convert.FromBase64String(DecryptedFileBytesAsBase64String));
         }
 
-        //TODO: Unit test for reading file from filesystem
+        [Test]
+        public void Decryption_DecryptDEREncryptedFileFromFilePath()
+        {
+            // Create a file with the encrypted data
+            var encryptedFilePath = Path.Combine(Path.GetTempPath(), "encryptedFileTest.encrypt");
+            File.WriteAllBytes(encryptedFilePath, Convert.FromBase64String(EncryptedFileAsBase64String));
+
+            var input = new DecryptDEREncryptedFileInput
+            {
+                EncryptedFilePath = encryptedFilePath,
+                PrivateKey = PrivateKey
+            };
+
+            var result = EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
+
+            File.Delete(encryptedFilePath);
+            Assert.AreEqual(result.DecryptedFileContentBytes, Convert.FromBase64String(DecryptedFileBytesAsBase64String));
+        }
     }
 }
