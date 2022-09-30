@@ -52,5 +52,7 @@ JDpgjqQA9bhUy4dG/9XFt6DS
 
             Assert.AreEqual(ret.DecryptedFileContentBytes, Convert.FromBase64String(DecryptedFileBytesAsBase64String));
         }
+
+        //TODO: Unit test for reading file from filesystem
     }
 }
