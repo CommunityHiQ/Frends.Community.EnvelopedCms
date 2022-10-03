@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Threading;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto;
@@ -8,16 +9,19 @@ using Org.BouncyCastle.OpenSsl;
 
 namespace Frends.Community.EnvelopedCms
 {
-    public static class EnvelopedCms
+    /// <summary>
+    /// Main class for enveloped data operations.
+    /// </summary>
+    public class EnvelopedCms
     {
         /// <summary>
-        /// This is task
+        /// Decrypts a DER encrypted file.
         /// Documentation: https://github.com/CommunityHiQ/Frends.Community.EnvelopedCms
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="input">Input parameters needed for decryption</param>
         /// <param name="cancellationToken"></param>
-        /// <returns>{string Replication} </returns>
-        public static DecryptDEREncryptedFileResult DecryptDEREncryptedFile(DecryptDEREncryptedFileInput input, CancellationToken cancellationToken)
+        /// <returns>DecryptDEREncryptedFileResult object {byte[] DecryptedFileContentBytes}</returns>
+        public static DecryptDEREncryptedFileResult DecryptDEREncryptedFile([PropertyTab] DecryptDEREncryptedFileInput input, CancellationToken cancellationToken)
         {
             byte[] fileContent;
 

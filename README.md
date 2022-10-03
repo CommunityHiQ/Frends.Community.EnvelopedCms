@@ -18,35 +18,37 @@ https://www.myget.org/F/frends-community/api/v3/index.json and in Gallery view i
 
 # Tasks
 
-## EnvelopedCms
+## DecryptDEREncryptedFile
 
-Repeats a message
+Decrypts a DER encrypted file
 
-### Properties
+### Task Parameters
+
+### DecryptDEREncryptedFileInput
+
+DecryptDEREncryptedFileInput consists of three properties EncryptedContentBytes, EncryptedFilePath and PrivateKey. 
+If the EncryptedFilePath is given, the EncryptedContentBytes is ignored & when the EncryptedFilePath is left empty, the EncryptedContentBytes will be used.
+PrivateKey is mandatory.
 
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
-| Message | `string` | Some string that will be repeated. | `foo` |
+| EncryptedContentBytes | `byte[]` | Content of the encrypted file as byte array. | `[104,84,105,115]` |
+| EncryptedFilePath | `string` | Full path to the encrypted file location. | `C:\temp\encrypted_file.txt` |
+| PrivateKey | `string` | Content of the private key file as a string. | this string should start with `-----BEGIN PRIVATE KEY-----` and ends in `-----END PRIVATE KEY-----` |
 
-### Options
-
-| Property | Type | Description | Example |
-| -------- | -------- | -------- | -------- |
-| Amount | `int` | Amount how many times message is repeated. | `3` |
-| Delimiter | `string` | Character(s) used between replications. | `, ` |
 
 ### Returns
 
-A result object with parameters.
+A DecryptDEREncryptedFileResult object with parameters.
 
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
-| Replication | `string` | Repeated string. | `foo, foo, foo` |
+| DecryptedFileContentBytes | `byte[]` | Decrypted data as byte array. | `[84,104,105,115]` |
 
 Usage:
 To fetch result use syntax:
 
-`#result.Replication`
+`#result.DecryptedFileContentBytes`
 
 # Building
 

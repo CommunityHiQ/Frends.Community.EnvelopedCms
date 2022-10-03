@@ -1,9 +1,7 @@
 ﻿#pragma warning disable 1591
 
-using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 
 namespace Frends.Community.EnvelopedCms
 {
@@ -19,13 +17,14 @@ namespace Frends.Community.EnvelopedCms
         public byte[] EncryptedContentBytes { get; set; }
 
         /// <summary>
-        /// File path to encrypted file
+        /// File path to encrypted file. Can be left empty if EncryptedContentBytes  is given.
         /// </summary>
         [DisplayFormat(DataFormatString = "Text")]
         public string EncryptedFilePath { get; set; }
 
         /// <summary>
-        /// Private key for decryption
+        /// Private key for decryption. 
+        /// Content of the private key file as a string that starts with -----BEGIN PRIVATE KEY----- and ends in -----END PRIVATE KEY-----.
         /// </summary>
         [PasswordPropertyText]
         public string PrivateKey { get; set; }

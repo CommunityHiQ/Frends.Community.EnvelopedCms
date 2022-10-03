@@ -57,7 +57,6 @@ JDpgjqQA9bhUy4dG/9XFt6DS
         [Test]
         public void Decryption_DecryptDEREncryptedFileFromFilePath()
         {
-            // Create a file with the encrypted data
             var encryptedFilePath = Path.Combine(Path.GetTempPath(), "encryptedFileTest.encrypt");
             File.WriteAllBytes(encryptedFilePath, Convert.FromBase64String(EncryptedFileAsBase64String));
 
