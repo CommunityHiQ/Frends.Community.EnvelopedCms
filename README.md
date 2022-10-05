@@ -1,6 +1,6 @@
 # Frends.Community.EnvelopedCms
 
-frends Community Task for EnvelopedCms
+Frends Community tasks for handling EnvelopedCms assymmetric encryption and decryption of files
 
 [![Actions Status](https://github.com/CommunityHiQ/Frends.Community.EnvelopedCms/workflows/PackAndPushAfterMerge/badge.svg)](https://github.com/CommunityHiQ/Frends.Community.EnvelopedCms/actions) ![MyGet](https://img.shields.io/myget/frends-community/v/Frends.Community.EnvelopedCms) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
@@ -34,7 +34,7 @@ PrivateKey is mandatory.
 | -------- | -------- | -------- | -------- |
 | EncryptedContentBytes | `byte[]` | Content of the encrypted file as byte array. | `[104,84,105,115]` |
 | EncryptedFilePath | `string` | Full path to the encrypted file location. | `C:\temp\encrypted_file.txt` |
-| PrivateKey | `string` | Content of the private key file as a string. | this string should start with `-----BEGIN PRIVATE KEY-----` and ends in `-----END PRIVATE KEY-----` |
+| PrivateKey | `string` | Content of the private key file as a string. Private key must be in .pem format. | this string should start with `-----BEGIN PRIVATE KEY-----` and ends in `-----END PRIVATE KEY-----` |
 
 
 ### Returns

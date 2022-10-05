@@ -1,11 +1,12 @@
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Text;
 
 namespace Frends.Community.EnvelopedCms.Tests
 {
     [TestFixture]
-    internal class DecryptTests
+    public class DecryptTests
     {
         private static string DecryptedFileBytesAsBase64String = @"PG5vdGU+DQo8dG8+VG92ZTwvdG8+DQo8ZnJvbT5KYW5pPC9mcm9tPg0KPGhlYWRpbmc+UmVtaW5kZXI8L2hlYWRpbmc+DQo8Ym9keT5Eb24ndCBmb3JnZXQgbWUgdGhpcyB3ZWVrZW5kITwvYm9keT4NCjwvbm90ZT4=";
 
@@ -38,8 +39,11 @@ XgJww2EjkrVHrpBLQUYvoPNo8v6Ux5nlzt9g4+gkT0feXFOEk3WdYgJHulbRYpEH
 JDpgjqQA9bhUy4dG/9XFt6DS
 -----END PRIVATE KEY-----";
 
+
         private static string EncryptedFileAsBase64String = @"MIICOgYJKoZIhvcNAQcDoIICKzCCAicCAQAxggF5MIIBdQIBADBdMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQCFHGP8M6Y11j+39AHtadITrcMqRV1MA0GCSqGSIb3DQEBAQUABIIBAIoF53QFpeeg+KZT4HDc+qh4sM2VS2FDyNbuYQCf707Zd/0XSzDD/qJ7qjuMKgX7rOlJ0XtOp8lHhRSIqK0TgR/Lg7oqr9m8KHik0xy86l9JAcDxNXJKUxPDPhGlbUqVf4oUEk9UD64AcOlC7GUIefh1OYw9rsQ7yZnv/rx5U6BW+THhWJ1d5bPoqPPyKTvxZzKBlzL9A3O3lgK9H6YsYWdT9hDfPH+1OZR/a76U/6p7ac5A+jrizyFICaHV/1Ga/OsF39kw9y81vEaqp11+ZR1sT6MBqk6oNZ2oDlZDvbSRSWo8JbSgC8NH9mk2hwZLckm7vMbX3d0nmsT7ghm+3AowgaQGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQI76CXbSiLo42AgYA2sMm2dnJ6bePI+dQIBpr6ScLZNIT8vWDLXzoVFo/eYPwi/N1mu83Fbus/qC1DfTtkd/L2hhDmsVv4+4/BtTYlehmwR0jnvu5RB0642eIezZBuLrfi0gNH5vIvOmWadwL4zKWWBnn9R92xxnL/mrh6v4K9nICT+PzAad2pYC8Jeg==";
 
+
+        // ------------------------------ Tests for decrypting with content bytes ( byte[] ) ------------------------------
         [Test]
         public void Decryption_DecryptDEREncryptedFileFromContentBytes()
         {
@@ -54,6 +58,38 @@ JDpgjqQA9bhUy4dG/9XFt6DS
             Assert.AreEqual(ret.DecryptedFileContentBytes, Convert.FromBase64String(DecryptedFileBytesAsBase64String));
         }
 
+        [Test]
+        public void Decryption_DecryptDEREncryptedFileFromContentBytes_InvalidContentBytes()
+        {
+            var input = new DecryptDEREncryptedFileInput
+            {
+                EncryptedContentBytes = Encoding.UTF8.GetBytes("Invalid Content"),
+                PrivateKey = PrivateKey
+            };
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
+            });
+        }
+
+        [Test]
+        public void Decryption_DecryptDEREncryptedFileFromContentBytes_EmptyContentBytes()
+        {
+            var input = new DecryptDEREncryptedFileInput
+            {
+                PrivateKey = PrivateKey
+            };
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
+            });
+        }
+
+
+
+        // ------------------------------ Tests for decrypting from file path ------------------------------
         [Test]
         public void Decryption_DecryptDEREncryptedFileFromFilePath()
         {
@@ -70,6 +106,55 @@ JDpgjqQA9bhUy4dG/9XFt6DS
 
             File.Delete(encryptedFilePath);
             Assert.AreEqual(result.DecryptedFileContentBytes, Convert.FromBase64String(DecryptedFileBytesAsBase64String));
+        }
+
+        [Test]
+        public void Decryption_DecryptDEREncryptedFileFromFilePath_InvalidFilePath()
+        {
+            var invalidFilePath = Path.Combine(Path.GetTempPath(), "Th1sF1leIsN0tVal1d.txt");
+
+            var input = new DecryptDEREncryptedFileInput
+            {
+                EncryptedFilePath = invalidFilePath,
+                PrivateKey = PrivateKey
+            };
+
+            Assert.Throws<FileNotFoundException>(() =>
+            {
+                EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
+            });
+        }
+
+
+
+        // ------------------------------ Tests for private key ------------------------------
+        [Test]
+        public void Decryption_InvalidPrivateKey()
+        {
+            var input = new DecryptDEREncryptedFileInput
+            {
+                EncryptedContentBytes = Convert.FromBase64String(EncryptedFileAsBase64String),
+                PrivateKey = "Invalid private key"
+            };
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
+            });  
+        }
+
+        [Test]
+        public void Decryption_EmptyPrivateKey()
+        {
+            var input = new DecryptDEREncryptedFileInput
+            {
+                EncryptedContentBytes = Convert.FromBase64String(EncryptedFileAsBase64String)
+            };
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
+            });
         }
     }
 }
