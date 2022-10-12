@@ -9,48 +9,21 @@ namespace Frends.Community.EnvelopedCms.Tests
     public class DecryptTests
     {
         private static string DecryptedFileBytesAsBase64String = @"PG5vdGU+DQo8dG8+VG92ZTwvdG8+DQo8ZnJvbT5KYW5pPC9mcm9tPg0KPGhlYWRpbmc+UmVtaW5kZXI8L2hlYWRpbmc+DQo8Ym9keT5Eb24ndCBmb3JnZXQgbWUgdGhpcyB3ZWVrZW5kITwvYm9keT4NCjwvbm90ZT4=";
-
-        private static string PrivateKey = @"-----BEGIN PRIVATE KEY-----
-MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDCwfhe+YjFWQTb
-V3LqAKWtk6HSGJyySJ2fo//BOVe/fqwBtlkLTieFasQDXDjMnf5iqlsE+WRfs/BC
-gdyx6PjGMbiA2a0kt2Mx/lAK6FMYES11mB12IcAqeI/UOURpDSqPfHxdmyr6uSWA
-nT1nW2lf4IflATOhgUU5FUJiF5y/sIYgcV+ZOEgUXUw1LXFn74iESRSh4LRodfr4
-JW/ooCbs4SCMis5GSZPfN2bwePc9PlTTg2OlvWZ6ojqcCs3lIlshTCXU9vBBKJV2
-DajU5T6XB3UACJixJk91S9LOyJqYsSNfRRntcEwRpekh8l4uwZkOmJ1qGcI8o7dg
-rfVorh0PAgMBAAECggEALi77K+J2mX3Llgv9txniL/AjXoPxnKF1p2anfnWPplxu
-g5VvNiwZWR0BUF6tJXCN423MWbieIce0wMC0ygeZ/r3Jp9x2n49RWYiaCIwhMELa
-idlBm0LTo/6k9MmDvHmfzxjREQ17uqrvBrnC1uCpc0/2ScroKHNUK/4rmMFKrXXP
-dgjGspBYa+bIIjZV2wgGd4RpqTPcHYn82F+ILnbOzxDdbTUmbJUtSqc0AOzMMGrb
-GyTAwxWqW1tMg+RXu1vcfdzS89F45HtzwHqa4QR5tIHDWpWayESogrj6mcnh2Vt6
-y4zlqp2u8dkQF7pviJS4WjDbHihbyDI/CmHmTt3bwQKBgQD0JWqILRuO3OUuwFUF
-5ySzeQp3aUn0I0n9IuLca7byH0ZPRCW+N0A2J/VFzfilH+NdBuz/VnV8HBEC23cE
-mYmYUuqd/+jzRBvBx+Uo8hu03VrCH9Be217BpF7JzCZq2hBF7hS+QL38cKiHGvoC
-Ugtve7d6yM4EOR/Ka63CryVEoQKBgQDMNq+4+bWnq1msVugzFBu8uLPc5NE9Z9hJ
-w/2YrUZJxliB4kWbMLrC1/sr2zYX8k/S6sizWQJYOXoLAnhIiMQaS+WLchSdbpLC
-6ZGfG4u8zpZIKTGZEKUptMQpVVFclDj8ju1LdQet19fgOheek2NW6F5axLAC/d1i
-WLoDgHRTrwKBgQCqNL+NSi0xLuyT6EAeCmO6v0K9tuh4zHVThZO06V80cvs4XaEW
-eDxKxRaoYIzcyVtfymlFJYhoSsTNQiU6TrPvPrcUCYnktnHHac1n+0m3kK4qMbW5
-u6PWyfnPI4UQ7w9zQSSy8j3BFOVYs0Tig0I3qX9jmUSPCygPnXwZArOvoQKBgAGt
-9XYE/7x4SU2EjXZWFQBRWJFZhGsH3pyEsyI9UpWqvvGahc4H8ZFGq3cp32EFCikG
-602mTsGg/2L1yz11en9o3mNuNcMxtJ1LxHnVhSmxXUUMqa7Dl0gnh3F7lSa4xVs2
-Zbc4KC8C1nCuqaERP0DoulXuxi/QHLEBX85FkS9bAoGBAIhxeDdz0xKHSvn2Z60C
-J3AD8Ux1WVhxK853oh+dqILvkW1TfcVrV/1gjRHl2VSm2afDQ4UlhO//CQQrgBlv
-XgJww2EjkrVHrpBLQUYvoPNo8v6Ux5nlzt9g4+gkT0feXFOEk3WdYgJHulbRYpEH
-JDpgjqQA9bhUy4dG/9XFt6DS
------END PRIVATE KEY-----";
-
-
+        private static string PrivateKeyAsBase64String = @"LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tDQpNSUlFdmdJQkFEQU5CZ2txaGtpRzl3MEJBUUVGQUFTQ0JLZ3dnZ1NrQWdFQUFvSUJBUURDd2ZoZStZakZXUVRiDQpWM0xxQUtXdGs2SFNHSnl5U0oyZm8vL0JPVmUvZnF3QnRsa0xUaWVGYXNRRFhEak1uZjVpcWxzRStXUmZzL0JDDQpnZHl4NlBqR01iaUEyYTBrdDJNeC9sQUs2Rk1ZRVMxMW1CMTJJY0FxZUkvVU9VUnBEU3FQZkh4ZG15cjZ1U1dBDQpuVDFuVzJsZjRJZmxBVE9oZ1VVNUZVSmlGNXkvc0lZZ2NWK1pPRWdVWFV3MUxYRm43NGlFU1JTaDRMUm9kZnI0DQpKVy9vb0NiczRTQ01pczVHU1pQZk4yYndlUGM5UGxUVGcyT2x2V1o2b2pxY0NzM2xJbHNoVENYVTl2QkJLSlYyDQpEYWpVNVQ2WEIzVUFDSml4Sms5MVM5TE95SnFZc1NOZlJSbnRjRXdScGVraDhsNHV3WmtPbUoxcUdjSThvN2RnDQpyZlZvcmgwUEFnTUJBQUVDZ2dFQUxpNzdLK0oybVgzTGxndjl0eG5pTC9BalhvUHhuS0YxcDJhbmZuV1BwbHh1DQpnNVZ2Tml3WldSMEJVRjZ0SlhDTjQyM01XYmllSWNlMHdNQzB5Z2VaL3IzSnA5eDJuNDlSV1lpYUNJd2hNRUxhDQppZGxCbTBMVG8vNms5TW1EdkhtZnp4alJFUTE3dXFydkJybkMxdUNwYzAvMlNjcm9LSE5VSy80cm1NRktyWFhQDQpkZ2pHc3BCWWErYklJalpWMndnR2Q0UnBxVFBjSFluODJGK0lMbmJPenhEZGJUVW1iSlV0U3FjMEFPek1NR3JiDQpHeVRBd3hXcVcxdE1nK1JYdTF2Y2ZkelM4OUY0NUh0endIcWE0UVI1dElIRFdwV2F5RVNvZ3JqNm1jbmgyVnQ2DQp5NHpscXAydThka1FGN3B2aUpTNFdqRGJIaWhieURJL0NtSG1UdDNid1FLQmdRRDBKV3FJTFJ1TzNPVXV3RlVGDQo1eVN6ZVFwM2FVbjBJMG45SXVMY2E3YnlIMFpQUkNXK04wQTJKL1ZGemZpbEgrTmRCdXovVm5WOEhCRUMyM2NFDQptWW1ZVXVxZC8ranpSQnZCeCtVbzhodTAzVnJDSDlCZTIxN0JwRjdKekNacTJoQkY3aFMrUUwzOGNLaUhHdm9DDQpVZ3R2ZTdkNnlNNEVPUi9LYTYzQ3J5VkVvUUtCZ1FETU5xKzQrYlducTFtc1Z1Z3pGQnU4dUxQYzVORTlaOWhKDQp3LzJZclVaSnhsaUI0a1diTUxyQzEvc3IyellYOGsvUzZzaXpXUUpZT1hvTEFuaElpTVFhUytXTGNoU2RicExDDQo2WkdmRzR1OHpwWklLVEdaRUtVcHRNUXBWVkZjbERqOGp1MUxkUWV0MTlmZ09oZWVrMk5XNkY1YXhMQUMvZDFpDQpXTG9EZ0hSVHJ3S0JnUUNxTkwrTlNpMHhMdXlUNkVBZUNtTzZ2MEs5dHVoNHpIVlRoWk8wNlY4MGN2czRYYUVXDQplRHhLeFJhb1lJemN5VnRmeW1sRkpZaG9Tc1ROUWlVNlRyUHZQcmNVQ1lua3RuSEhhYzFuKzBtM2tLNHFNYlc1DQp1NlBXeWZuUEk0VVE3dzl6UVNTeThqM0JGT1ZZczBUaWcwSTNxWDlqbVVTUEN5Z1BuWHdaQXJPdm9RS0JnQUd0DQo5WFlFLzd4NFNVMkVqWFpXRlFCUldKRlpoR3NIM3B5RXN5STlVcFdxdnZHYWhjNEg4WkZHcTNjcDMyRUZDaWtHDQo2MDJtVHNHZy8yTDF5ejExZW45bzNtTnVOY014dEoxTHhIblZoU214WFVVTXFhN0RsMGduaDNGN2xTYTR4VnMyDQpaYmM0S0M4QzFuQ3VxYUVSUDBEb3VsWHV4aS9RSExFQlg4NUZrUzliQW9HQkFJaHhlRGR6MHhLSFN2bjJaNjBDDQpKM0FEOFV4MVdWaHhLODUzb2grZHFJTHZrVzFUZmNWclYvMWdqUkhsMlZTbTJhZkRRNFVsaE8vL0NRUXJnQmx2DQpYZ0p3dzJFamtyVkhycEJMUVVZdm9QTm84djZVeDVubHp0OWc0K2drVDBmZVhGT0VrM1dkWWdKSHVsYlJZcEVIDQpKRHBnanFRQTliaFV5NGRHLzlYRnQ2RFMNCi0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0=";
         private static string EncryptedFileAsBase64String = @"MIICOgYJKoZIhvcNAQcDoIICKzCCAicCAQAxggF5MIIBdQIBADBdMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQCFHGP8M6Y11j+39AHtadITrcMqRV1MA0GCSqGSIb3DQEBAQUABIIBAIoF53QFpeeg+KZT4HDc+qh4sM2VS2FDyNbuYQCf707Zd/0XSzDD/qJ7qjuMKgX7rOlJ0XtOp8lHhRSIqK0TgR/Lg7oqr9m8KHik0xy86l9JAcDxNXJKUxPDPhGlbUqVf4oUEk9UD64AcOlC7GUIefh1OYw9rsQ7yZnv/rx5U6BW+THhWJ1d5bPoqPPyKTvxZzKBlzL9A3O3lgK9H6YsYWdT9hDfPH+1OZR/a76U/6p7ac5A+jrizyFICaHV/1Ga/OsF39kw9y81vEaqp11+ZR1sT6MBqk6oNZ2oDlZDvbSRSWo8JbSgC8NH9mk2hwZLckm7vMbX3d0nmsT7ghm+3AowgaQGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQI76CXbSiLo42AgYA2sMm2dnJ6bePI+dQIBpr6ScLZNIT8vWDLXzoVFo/eYPwi/N1mu83Fbus/qC1DfTtkd/L2hhDmsVv4+4/BtTYlehmwR0jnvu5RB0642eIezZBuLrfi0gNH5vIvOmWadwL4zKWWBnn9R92xxnL/mrh6v4K9nICT+PzAad2pYC8Jeg==";
 
 
-        // ------------------------------ Tests for decrypting with content bytes ( byte[] ) ------------------------------
+        /*--------------- TESTS THAT CONTAIN CORRECT INPUTS ---------------*/
+
+
+        // Testcase: Valid EncryptedContentBytes & PrivateKeyAsBase64EncodedString
         [Test]
-        public void Decryption_DecryptDEREncryptedFileFromContentBytes()
+        public void Decryption_DecryptDEREncryptedFileFromContentBytes_PrivateKeyFromString()
         {
             var input = new DecryptDEREncryptedFileInput
             {
                 EncryptedContentBytes = Convert.FromBase64String(EncryptedFileAsBase64String),
-                PrivateKey = PrivateKey
+                PrivateKeyAsBase64EncodedString = PrivateKeyAsBase64String
             };
 
             var ret = EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
@@ -58,40 +31,28 @@ JDpgjqQA9bhUy4dG/9XFt6DS
             Assert.AreEqual(ret.DecryptedFileContentBytes, Convert.FromBase64String(DecryptedFileBytesAsBase64String));
         }
 
+        // Testcase: Valid EncryptedContentBytes & PrivateKeyFilePath
         [Test]
-        public void Decryption_DecryptDEREncryptedFileFromContentBytes_InvalidContentBytes()
+        public void Decryption_DecryptDEREncryptedFileFromContentBytes_PrivateKeyFromFile()
         {
+            var privateKeyFilePath = Path.Combine(Path.GetTempPath(), "privateKeyTestFile.pem");
+            File.WriteAllText(privateKeyFilePath, PrivateKeyAsBase64String);
+
             var input = new DecryptDEREncryptedFileInput
             {
-                EncryptedContentBytes = Encoding.UTF8.GetBytes("Invalid Content"),
-                PrivateKey = PrivateKey
+                EncryptedContentBytes = Convert.FromBase64String(EncryptedFileAsBase64String),
+                PrivateKeyFilePath = privateKeyFilePath
             };
 
-            Assert.Throws<ArgumentException>(() =>
-            {
-                EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
-            });
+            var ret = EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
+
+            File.Delete(privateKeyFilePath);
+            Assert.AreEqual(ret.DecryptedFileContentBytes, Convert.FromBase64String(DecryptedFileBytesAsBase64String));
         }
 
+        // Testcase: Valid EncryptedFilePath & PrivateKeyAsBase64EncodedString
         [Test]
-        public void Decryption_DecryptDEREncryptedFileFromContentBytes_EmptyContentBytes()
-        {
-            var input = new DecryptDEREncryptedFileInput
-            {
-                PrivateKey = PrivateKey
-            };
-
-            Assert.Throws<ArgumentException>(() =>
-            {
-                EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
-            });
-        }
-
-
-
-        // ------------------------------ Tests for decrypting from file path ------------------------------
-        [Test]
-        public void Decryption_DecryptDEREncryptedFileFromFilePath()
+        public void Decryption_DecryptDEREncryptedFileFromFilePath_PrivateKeyFromString()
         {
             var encryptedFilePath = Path.Combine(Path.GetTempPath(), "encryptedFileTest.encrypt");
             File.WriteAllBytes(encryptedFilePath, Convert.FromBase64String(EncryptedFileAsBase64String));
@@ -99,7 +60,7 @@ JDpgjqQA9bhUy4dG/9XFt6DS
             var input = new DecryptDEREncryptedFileInput
             {
                 EncryptedFilePath = encryptedFilePath,
-                PrivateKey = PrivateKey
+                PrivateKeyAsBase64EncodedString = PrivateKeyAsBase64String
             };
 
             var result = EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
@@ -108,6 +69,65 @@ JDpgjqQA9bhUy4dG/9XFt6DS
             Assert.AreEqual(result.DecryptedFileContentBytes, Convert.FromBase64String(DecryptedFileBytesAsBase64String));
         }
 
+        // Testcase: Valid EncryptedFilePath & PrivateKeyFilePath
+        [Test]
+        public void Decryption_DecryptDEREncryptedFileFromFilePath_PrivateKeyFromFile()
+        {
+            var encryptedFilePath = Path.Combine(Path.GetTempPath(), "encryptedFileTest.encrypt");
+            File.WriteAllBytes(encryptedFilePath, Convert.FromBase64String(EncryptedFileAsBase64String));
+
+            var privateKeyFilePath = Path.Combine(Path.GetTempPath(), "privateKeyFileTest.pem");
+            File.WriteAllText(privateKeyFilePath, PrivateKeyAsBase64String);
+
+            var input = new DecryptDEREncryptedFileInput
+            {
+                EncryptedFilePath = encryptedFilePath,
+                PrivateKeyFilePath = privateKeyFilePath
+            };
+
+            var result = EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
+
+            File.Delete(encryptedFilePath);
+            File.Delete(privateKeyFilePath);
+            Assert.AreEqual(result.DecryptedFileContentBytes, Convert.FromBase64String(DecryptedFileBytesAsBase64String));
+        }
+
+
+        /*--------------- TESTS THAT CONTAIN INVALID ENCRYPTED CONTENT & VALID PRIVATE KEY ---------------*/
+
+
+        // Testcase: Invalid EncryptedContentBytes & Valid PrivateKeyAsBase64EncodedString
+        [Test]
+        public void Decryption_DecryptDEREncryptedFileFromContentBytes_InvalidContentBytes()
+        {
+            var input = new DecryptDEREncryptedFileInput
+            {
+                EncryptedContentBytes = Encoding.UTF8.GetBytes("Invalid Content"),
+                PrivateKeyAsBase64EncodedString = PrivateKeyAsBase64String
+            };
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
+            });
+        }
+
+        // Testcase: No encrypted content given & Valid PrivateKeyAsBase64EncodedString
+        [Test]
+        public void Decryption_EmptyContent()
+        {
+            var input = new DecryptDEREncryptedFileInput
+            {
+                PrivateKeyAsBase64EncodedString = PrivateKeyAsBase64String
+            };
+
+            Assert.Throws<ArgumentException>(() =>
+            {
+                EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
+            });
+        }
+
+        // Testcase: Invalid EncryptedFilePath & Valid PrivateKeyAsBase64EncodedString
         [Test]
         public void Decryption_DecryptDEREncryptedFileFromFilePath_InvalidFilePath()
         {
@@ -116,7 +136,7 @@ JDpgjqQA9bhUy4dG/9XFt6DS
             var input = new DecryptDEREncryptedFileInput
             {
                 EncryptedFilePath = invalidFilePath,
-                PrivateKey = PrivateKey
+                PrivateKeyAsBase64EncodedString = PrivateKeyAsBase64String
             };
 
             Assert.Throws<FileNotFoundException>(() =>
@@ -125,24 +145,25 @@ JDpgjqQA9bhUy4dG/9XFt6DS
             });
         }
 
+        /*--------------- TESTS THAT CONTAIN VALID ENCRYPTED CONTENT & INVALID PRIVATE KEY ---------------*/
 
-
-        // ------------------------------ Tests for private key ------------------------------
+        // Testcase: Valid EncryptedContentBytes & Invalid PrivateKeyAsBase64EncodedString
         [Test]
         public void Decryption_InvalidPrivateKey()
         {
             var input = new DecryptDEREncryptedFileInput
             {
                 EncryptedContentBytes = Convert.FromBase64String(EncryptedFileAsBase64String),
-                PrivateKey = "Invalid private key"
+                PrivateKeyAsBase64EncodedString = "This is not a valid private key"
             };
 
-            Assert.Throws<ArgumentException>(() =>
+            Assert.Throws<FormatException>(() =>
             {
                 EnvelopedCms.DecryptDEREncryptedFile(input, new System.Threading.CancellationToken());
             });  
         }
 
+        // Testcase: Valid EncryptedContentBytes & No private key given
         [Test]
         public void Decryption_EmptyPrivateKey()
         {

@@ -11,23 +11,28 @@ namespace Frends.Community.EnvelopedCms
     public class DecryptDEREncryptedFileInput
     {
         /// <summary>
-        /// Byte array of file to decrypt
+        /// Byte array of the file to decrypt
         /// </summary>
         [DisplayFormat(DataFormatString = "Expression")]
         public byte[] EncryptedContentBytes { get; set; }
 
         /// <summary>
-        /// File path to encrypted file. Can be left empty if EncryptedContentBytes  is given.
+        /// File path to the encrypted file. Can be left empty if EncryptedContentBytes  is given.
         /// </summary>
         [DisplayFormat(DataFormatString = "Text")]
         public string EncryptedFilePath { get; set; }
 
         /// <summary>
-        /// Private key for decryption. 
-        /// Content of the private key file as a string that starts with -----BEGIN PRIVATE KEY----- and ends in -----END PRIVATE KEY-----.
+        /// File path to the private key file. Must be in .pem format.
         /// </summary>
-        [PasswordPropertyText]
-        public string PrivateKey { get; set; }
+        [DisplayFormat(DataFormatString = "Text")]
+        public string PrivateKeyFilePath { get; set; }
+
+        /// <summary>
+        /// Private key files content as Base64 Encoded String. Can be left empty if PrivateKeyFilePath is given.
+        /// </summary>
+        [DisplayFormat(DataFormatString = "Expression")]
+        public string PrivateKeyAsBase64EncodedString { get; set; }
     }
 
     /// <summary>

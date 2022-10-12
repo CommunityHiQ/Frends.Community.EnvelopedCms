@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Text;
 using System.Threading;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto;
@@ -24,11 +25,10 @@ namespace Frends.Community.EnvelopedCms
         /// <returns>DecryptDEREncryptedFileResult object {byte[] DecryptedFileContentBytes}</returns>
         public static DecryptDEREncryptedFileResult DecryptDEREncryptedFile([PropertyTab] DecryptDEREncryptedFileInput input, CancellationToken cancellationToken)
         {
-            byte[] encryptedData = GetEncryptedContent(input);
+            byte[] encryptedData = GetEncryptedContent(input); // Retrieve the content of the encrypted file.
+            string encodedPrivateKey = GetEncodedPrivateKey(input); // Retrieve the encoded private key content.
 
-            if (string.IsNullOrEmpty(input.PrivateKey)) throw new ArgumentException("PrivateKey must be provided.");
-
-            var privateKey = input.PrivateKey;
+            string decodedPrivateKey = Encoding.UTF8.GetString(Convert.FromBase64String(encodedPrivateKey));
             byte[] decryptedData = null;
 
             try
@@ -36,7 +36,7 @@ namespace Frends.Community.EnvelopedCms
                 AsymmetricKeyParameter key = null;
 
                 // Initialize PemReader: PemReader parses the content by removing unnecessary headers/footers & decodes the pem data into binary format.
-                var pem = new PemReader(new StringReader(privateKey));
+                var pem = new PemReader(new StringReader(decodedPrivateKey));
                 
                 var keyObject = pem.ReadObject();
 
@@ -93,6 +93,32 @@ namespace Frends.Community.EnvelopedCms
             }
 
             return encryptedContent;
+        }
+
+        /// <summary>
+        /// Retrieves the encoded private key content from the DecryptDEREncryptedFileInput object, throws an exception when there is no content to retrieve.
+        /// </summary>
+        /// <param name="input">DecryptDEREncryptFileInput object containing the input data</param>
+        /// <returns>string containing the encoded private key content</returns>
+        /// <exception cref="ArgumentException"></exception>
+        private static string GetEncodedPrivateKey(DecryptDEREncryptedFileInput input)
+        {
+            string privateKey;
+
+            if (!string.IsNullOrEmpty(input.PrivateKeyFilePath))
+            {
+                privateKey = File.ReadAllText(input.PrivateKeyFilePath);
+
+                if (privateKey == null || privateKey.Length == 0) throw new ArgumentException($"Error while reading Private Key from filepath: {input.PrivateKeyFilePath}. No content found");
+            }
+            else
+            {
+                privateKey = input.PrivateKeyAsBase64EncodedString;
+
+                if (privateKey == null || privateKey.Length == 0) throw new ArgumentException("Given PrivateKeyAsBase64EncodedString was empty");
+            }
+
+            return privateKey;
         }
     }
 }
