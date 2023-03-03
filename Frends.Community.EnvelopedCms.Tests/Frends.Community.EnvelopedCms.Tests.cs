@@ -36,7 +36,7 @@ namespace Frends.Community.EnvelopedCms.Tests
         public void Decryption_DecryptDEREncryptedFileFromContentBytes_PrivateKeyFromFile()
         {
             var privateKeyFilePath = Path.Combine(Path.GetTempPath(), "privateKeyTestFile.pem");
-            File.WriteAllText(privateKeyFilePath, PrivateKeyAsBase64String);
+            File.WriteAllBytes(privateKeyFilePath, Convert.FromBase64String(PrivateKeyAsBase64String));
 
             var input = new DecryptDEREncryptedFileInput
             {
@@ -77,7 +77,7 @@ namespace Frends.Community.EnvelopedCms.Tests
             File.WriteAllBytes(encryptedFilePath, Convert.FromBase64String(EncryptedFileAsBase64String));
 
             var privateKeyFilePath = Path.Combine(Path.GetTempPath(), "privateKeyFileTest.pem");
-            File.WriteAllText(privateKeyFilePath, PrivateKeyAsBase64String);
+            File.WriteAllBytes(privateKeyFilePath, Convert.FromBase64String(PrivateKeyAsBase64String));
 
             var input = new DecryptDEREncryptedFileInput
             {
