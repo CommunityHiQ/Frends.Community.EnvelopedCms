@@ -83,4 +83,5 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 
 | Version | Changes |
 | ------- | ------- |
-| 1.0.0   | Initial version with DecryptDEREncryptedFile task|
+| 1.0.0   | Initial version with DecryptDEREncryptedFile task |
+| 1.1.0   | Targeted to .NET6 and 8, and updated System.ComponentModel.Annotations to 5.0.0 |
