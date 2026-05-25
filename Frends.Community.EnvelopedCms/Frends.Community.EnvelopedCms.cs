@@ -26,9 +26,8 @@ namespace Frends.Community.EnvelopedCms
         public static DecryptDEREncryptedFileResult DecryptDEREncryptedFile([PropertyTab] DecryptDEREncryptedFileInput input, CancellationToken cancellationToken)
         {
             byte[] encryptedData = GetEncryptedContent(input); // Retrieve the content of the encrypted file.
-            string encodedPrivateKey = GetEncodedPrivateKey(input); // Retrieve the encoded private key content.
+            string decodedPrivateKey = GetEncodedPrivateKeyAndDecode(input); // Retrieve the encoded private key content.
 
-            string decodedPrivateKey = Encoding.UTF8.GetString(Convert.FromBase64String(encodedPrivateKey));
             byte[] decryptedData = null;
 
             try
@@ -37,7 +36,7 @@ namespace Frends.Community.EnvelopedCms
 
                 // Initialize PemReader: PemReader parses the content by removing unnecessary headers/footers & decodes the pem data into binary format.
                 var pem = new PemReader(new StringReader(decodedPrivateKey));
-                
+
                 var keyObject = pem.ReadObject();
 
                 if (keyObject is AsymmetricCipherKeyPair pair) // AsymmetricCipherKeyPair holds private/public key pair.
@@ -83,7 +82,7 @@ namespace Frends.Community.EnvelopedCms
             {
                 encryptedContent = File.ReadAllBytes(input.EncryptedFilePath);
 
-                if (encryptedContent == null || encryptedContent.Length == 0) throw new ArgumentException($"Error while reading content from a given filepath: {input.EncryptedFilePath}. No content found.");    
+                if (encryptedContent == null || encryptedContent.Length == 0) throw new ArgumentException($"Error while reading content from a given filepath: {input.EncryptedFilePath}. No content found.");
             }
             else
             {
@@ -101,7 +100,7 @@ namespace Frends.Community.EnvelopedCms
         /// <param name="input">DecryptDEREncryptFileInput object containing the input data</param>
         /// <returns>string containing the encoded private key content</returns>
         /// <exception cref="ArgumentException"></exception>
-        private static string GetEncodedPrivateKey(DecryptDEREncryptedFileInput input)
+        private static string GetEncodedPrivateKeyAndDecode(DecryptDEREncryptedFileInput input)
         {
             string privateKey;
 
@@ -113,9 +112,10 @@ namespace Frends.Community.EnvelopedCms
             }
             else
             {
-                privateKey = input.PrivateKeyAsBase64EncodedString;
+                if (string.IsNullOrWhiteSpace(input.PrivateKeyAsBase64EncodedString))
+                    throw new ArgumentException("Given PrivateKeyAsBase64EncodedString was empty");
 
-                if (privateKey == null || privateKey.Length == 0) throw new ArgumentException("Given PrivateKeyAsBase64EncodedString was empty");
+                privateKey = Encoding.UTF8.GetString(Convert.FromBase64String(input.PrivateKeyAsBase64EncodedString));
             }
 
             return privateKey;
